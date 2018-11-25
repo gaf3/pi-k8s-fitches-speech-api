@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pi-k8s-fitches-speech-api
+  namespace: fitches
+  labels:
+    app: pi-k8s-fitches-speech-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pi-k8s-fitches-speech-api
+  template:
+    metadata:
+      labels:
+        app: pi-k8s-fitches-speech-api
+    spec:
+      containers:
+      - name: rest
+        image: docker.io/gaf3/pi-k8s-fitches-speech-api:0.1
+        imagePullPolicy: Always
+        env:
+          - name: REDIS_HOST
+            value: redis.fitches.svc.cluster.local
+          - name: REDIS_PORT
+            value: "6379"
+          - name: REDIS_CHANNEL
+            value: speech
+        ports:
+        - containerPort: 8365
+        readinessProbe:
+          initialDelaySeconds: 5
+          httpGet:
+            path: /health
+            port: 8365
+        livenessProbe:
+          initialDelaySeconds: 2
+          periodSeconds: 5
+          httpGet:
+            path: /health
+            port: 8365
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: pi-k8s-fitches-speech-api
+  namespace: fitches
+spec:
+  selector:
+    app: pi-k8s-fitches-speech-api
+  ports:
+  - protocol: TCP
+    port: 8365
+    targetPort: 8365
