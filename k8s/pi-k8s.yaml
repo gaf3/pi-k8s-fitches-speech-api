@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pi-k8s-fitches-speech-api
+  name: speech-api
   namespace: fitches
   labels:
-    app: pi-k8s-fitches-speech-api
+    app: speech-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: pi-k8s-fitches-speech-api
+      app: speech-api
   template:
     metadata:
       labels:
-        app: pi-k8s-fitches-speech-api
+        app: speech-api
     spec:
       containers:
       - name: rest
@@ -43,11 +43,11 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: pi-k8s-fitches-speech-api
+  name: speech-api
   namespace: fitches
 spec:
   selector:
-    app: pi-k8s-fitches-speech-api
+    app: speech-api
   ports:
   - protocol: TCP
     port: 8365
