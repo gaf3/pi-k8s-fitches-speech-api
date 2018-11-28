@@ -48,6 +48,7 @@ metadata:
 spec:
   selector:
     app: speech-api
+  type: NodePort
   ports:
   - protocol: TCP
     port: 8365
