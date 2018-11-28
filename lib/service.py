@@ -22,6 +22,15 @@ def health():
 
     return {"message": "OK"}
 
+def setting_load():
+
+    with open("/etc/pi-k8s/settings.json", "r") as settings_file:
+        return json.load(settings_file)
+
+def setting_list():
+
+    return {"settings": setting_load()}
+
 def speak():
 
     message = {
