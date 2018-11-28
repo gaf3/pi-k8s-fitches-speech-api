@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: rest
-        image: docker.io/gaf3/pi-k8s-fitches-speech-api:0.1
+        image: docker.io/gaf3/pi-k8s-fitches-speech-api:0.2
         imagePullPolicy: Always
         env:
           - name: REDIS_HOST
@@ -26,6 +26,9 @@ spec:
             value: "6379"
           - name: REDIS_CHANNEL
             value: speech
+        volumeMounts:
+        - name: config
+          mountPath: /etc/pi-k8s
         ports:
         - containerPort: 8365
         readinessProbe:
@@ -39,6 +42,10 @@ spec:
           httpGet:
             path: /health
             port: 8365
+      volumes:
+        - name: config
+          configMap:
+            name: speech-api
 ---
 kind: Service
 apiVersion: v1

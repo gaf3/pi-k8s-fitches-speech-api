@@ -1,8 +1,8 @@
 IMAGE=pi-k8s-fitches-speech-api
-VERSION=0.1
+VERSION=0.2
 ACCOUNT=gaf3
 NAMESPACE=fitches
-VOLUMES=-v ${PWD}/openapi/:/opt/pi-k8s/openapi/ -v ${PWD}/lib/:/opt/pi-k8s/lib/ -v ${PWD}/test/:/opt/pi-k8s/test/ -v ${PWD}/bin/:/opt/pi-k8s/bin/
+VOLUMES=-v ${PWD}/openapi/:/opt/pi-k8s/openapi/ -v ${PWD}/settings.json.example/:/etc/pi-k8s/settings.json -v ${PWD}/lib/:/opt/pi-k8s/lib/ -v ${PWD}/test/:/opt/pi-k8s/test/ -v ${PWD}/bin/:/opt/pi-k8s/bin/
 PORT=6589
 
 .PHONY: pull build shell test run push create update delete
@@ -24,6 +24,9 @@ run:
 
 push: build
 	docker push $(ACCOUNT)/$(IMAGE):$(VERSION)
+
+config:
+	kubectl create configmap -n fitches speech-api --dry-run --from-file=settings.json -o yaml | kubectl apply -f -
 
 create:
 	kubectl create -f k8s/pi-k8s.yaml

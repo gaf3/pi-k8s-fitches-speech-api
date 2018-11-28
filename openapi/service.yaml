@@ -15,6 +15,14 @@ paths:
       responses:
         200:
           description: We're good
+  /setting:
+    get:
+      operationId: service.setting_list
+      tags: [Speak]
+      summary: Settings for dealing with Speech
+      responses:
+        200:
+          description: We're good
   /speak:
     post:
       operationId: service.speak

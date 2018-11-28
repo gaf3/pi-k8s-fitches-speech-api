@@ -38,6 +38,49 @@ class TestService(unittest.TestCase):
 
         self.assertEqual(self.api.get("/health").json, {"message": "OK"})
 
+    def test_setting_load(self):
+
+        self.assertEqual(service.setting_load(), {
+            "node": [
+                "pi-k8s-timmy",
+                "pi-k8s-sally"
+            ],
+            "person": [
+                "Timmy",
+                "Sally"
+            ],
+            "text": [
+                "time for dinner"
+            ],
+            "language": [
+                "en"
+            ]
+        })
+
+    def test_setting_list(self):
+
+        response = self.api.get("/setting")
+
+        self.assertEqual(response.json, {
+            "settings": {
+                "node": [
+                    "pi-k8s-timmy",
+                    "pi-k8s-sally"
+                ],
+                "person": [
+                    "Timmy",
+                    "Sally"
+                ],
+                "text": [
+                    "time for dinner"
+                ],
+                "language": [
+                    "en"
+                ]
+            }
+        })
+        self.assertEqual(response.status_code, 200)
+
     @unittest.mock.patch("service.time.time")
     def test_speak(self, mock_time):
 
