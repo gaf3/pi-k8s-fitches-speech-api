@@ -43,14 +43,8 @@ class TestService(unittest.TestCase):
         self.assertEqual(service.setting_load(), {
             "node": [
                 "pi-k8s-timmy",
-                "pi-k8s-sally"
-            ],
-            "person": [
-                "Timmy",
-                "Sally"
-            ],
-            "text": [
-                "time for dinner"
+                "pi-k8s-sally",
+                ""
             ],
             "language": [
                 "en"
@@ -65,14 +59,8 @@ class TestService(unittest.TestCase):
             "settings": {
                 "node": [
                     "pi-k8s-timmy",
-                    "pi-k8s-sally"
-                ],
-                "person": [
-                    "Timmy",
-                    "Sally"
-                ],
-                "text": [
-                    "time for dinner"
+                    "pi-k8s-sally",
+                    ""
                 ],
                 "language": [
                     "en"
