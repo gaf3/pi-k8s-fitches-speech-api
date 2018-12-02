@@ -1,5 +1,6 @@
 import os
 import time
+import yaml
 import json
 import redis
 import connexion
@@ -24,8 +25,8 @@ def health():
 
 def setting_load():
 
-    with open("/etc/pi-k8s/settings.json", "r") as settings_file:
-        return json.load(settings_file)
+    with open("/etc/pi-k8s/settings.yaml", "r") as settings_file:
+        return yaml.load(settings_file)
 
 def setting_list():
 

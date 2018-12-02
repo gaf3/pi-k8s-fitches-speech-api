@@ -1,10 +1,10 @@
 MACHINE=$(shell uname -m)
 IMAGE=pi-k8s-fitches-speech-api
-VERSION=0.2
+VERSION=0.3
 TAG="$(VERSION)-$(MACHINE)"
 ACCOUNT=gaf3
 NAMESPACE=fitches
-VOLUMES=-v ${PWD}/openapi/:/opt/pi-k8s/openapi/ -v ${PWD}/settings.json.example/:/etc/pi-k8s/settings.json -v ${PWD}/lib/:/opt/pi-k8s/lib/ -v ${PWD}/test/:/opt/pi-k8s/test/ -v ${PWD}/bin/:/opt/pi-k8s/bin/
+VOLUMES=-v ${PWD}/openapi/:/opt/pi-k8s/openapi/ -v ${PWD}/settings.yaml.example/:/etc/pi-k8s/settings.yaml -v ${PWD}/lib/:/opt/pi-k8s/lib/ -v ${PWD}/test/:/opt/pi-k8s/test/ -v ${PWD}/bin/:/opt/pi-k8s/bin/
 PORT=8365
 
 ifeq ($(MACHINE),armv7l)
@@ -31,7 +31,7 @@ push: build
 	docker push $(ACCOUNT)/$(IMAGE):$(TAG)
 
 config:
-	kubectl create configmap -n fitches speech-api --dry-run --from-file=settings.json -o yaml | kubectl -n fitches --context=pi-k8s apply -f -
+	kubectl create configmap -n fitches speech-api --dry-run --from-file=settings.yaml -o yaml | kubectl -n fitches --context=pi-k8s apply -f -
 
 create:
 	kubectl --context=pi-k8s create -f k8s/pi-k8s.yaml
@@ -43,7 +43,7 @@ delete:
 	kubectl --context=pi-k8s delete -f k8s/pi-k8s.yaml
 
 config-dev:
-	kubectl create configmap -n fitches speech-api --dry-run --from-file=settings.json -o yaml | kubectl -n fitches --context=minikube apply -f -
+	kubectl create configmap -n fitches speech-api --dry-run --from-file=settings.yaml -o yaml | kubectl -n fitches --context=minikube apply -f -
 
 create-dev:
 	kubectl --context=minikube create -f k8s/minikube.yaml
